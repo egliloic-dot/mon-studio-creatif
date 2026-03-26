@@ -505,13 +505,21 @@ export default function App() {
       )
     }
 
-    // Masquer les Transformers (cadres de sélection) — ils font partie du Stage
-    // et s'exporteraient sinon dans le PNG/JPG/PDF
-    const transformers = stage.find('Transformer')
-    transformers.forEach(tr => tr.hide())
-    stage.getLayers().forEach(l => l.batchDraw())
+    // ── 1. Détacher ET masquer tous les Transformers ─────────────────
+    // tr.nodes([]) : détache les poignées (le cadre devient vide)
+    // tr.visible(false) : garantie visuelle supplémentaire
+    const konvaTransformers = stage.find('Transformer') as Konva.Transformer[]
+    konvaTransformers.forEach(tr => {
+      tr.nodes([])
+      tr.visible(false)
+    })
 
-    // Capturer uniquement la zone artboard, à 2× la résolution artboard
+    // ── 2. Rendu SYNCHRONE — stage.draw() met à jour le canvas dans le
+    //    même tick JS, contrairement à batchDraw() qui utilise RAF.
+    //    toDataURL() lit le canvas immédiatement après.
+    stage.draw()
+
+    // ── 3. Capture de l'artboard (Transformers invisibles à ce stade)
     const dataUrl = stage.toDataURL({
       x: transform.x,
       y: transform.y,
@@ -520,10 +528,6 @@ export default function App() {
       pixelRatio: 2 / sc,
     })
 
-    // Restaurer les Transformers après capture
-    transformers.forEach(tr => tr.show())
-    stage.getLayers().forEach(l => l.batchDraw())
-
     const dl = (url: string, name: string) => {
       const a = document.createElement('a')
       a.href = url
@@ -531,33 +535,42 @@ export default function App() {
       a.click()
     }
 
-    if (format === 'png') {
-      dl(dataUrl, 'mon-design.png')
-      showToast('PNG exporté ✓')
+    // ── 4. Génération et téléchargement du fichier ────────────────────
+    //    La restauration a lieu dans le bloc `finally`, APRÈS le download.
+    try {
+      if (format === 'png') {
+        dl(dataUrl, 'mon-design.png')
+        showToast('PNG exporté ✓')
 
-    } else if (format === 'jpg') {
-      // Compositer sur fond blanc pour JPEG (pas de canal alpha)
-      const img = new Image()
-      img.src = dataUrl
-      await new Promise<void>(r => { img.onload = () => r() })
-      const c = document.createElement('canvas')
-      c.width  = W * 2
-      c.height = H * 2
-      const ctx = c.getContext('2d')!
-      ctx.fillStyle = '#ffffff'
-      ctx.fillRect(0, 0, c.width, c.height)
-      ctx.drawImage(img, 0, 0)
-      dl(c.toDataURL('image/jpeg', quality), 'mon-design.jpg')
-      c.width = 0; c.height = 0 // libérer mémoire
-      showToast('JPEG exporté ✓')
+      } else if (format === 'jpg') {
+        // Compositer sur fond blanc pour JPEG (pas de canal alpha)
+        const img = new Image()
+        img.src = dataUrl
+        await new Promise<void>(r => { img.onload = () => r() })
+        const c = document.createElement('canvas')
+        c.width  = W * 2
+        c.height = H * 2
+        const ctx = c.getContext('2d')!
+        ctx.fillStyle = '#ffffff'
+        ctx.fillRect(0, 0, c.width, c.height)
+        ctx.drawImage(img, 0, 0)
+        dl(c.toDataURL('image/jpeg', quality), 'mon-design.jpg')
+        c.width = 0; c.height = 0
+        showToast('JPEG exporté ✓')
 
-    } else if (format === 'pdf') {
-      const { jsPDF } = await import('jspdf')
-      const orientation = W >= H ? 'landscape' : 'portrait'
-      const pdf = new jsPDF({ orientation, unit: 'px', format: [W, H] })
-      pdf.addImage(dataUrl, 'PNG', 0, 0, W, H)
-      pdf.save('design.pdf')
-      showToast('PDF exporté ✓')
+      } else if (format === 'pdf') {
+        const { jsPDF } = await import('jspdf')
+        const orientation = W >= H ? 'landscape' : 'portrait'
+        const pdf = new jsPDF({ orientation, unit: 'px', format: [W, H] })
+        pdf.addImage(dataUrl, 'PNG', 0, 0, W, H)
+        pdf.save('design.pdf')
+        showToast('PDF exporté ✓')
+      }
+    } finally {
+      // ── 5. Restauration des Transformers APRÈS le téléchargement ─────
+      //    Toujours exécuté, même en cas d'erreur.
+      konvaTransformers.forEach(tr => tr.visible(true))
+      stage.batchDraw()
     }
   }, [showToast, transform])
 
