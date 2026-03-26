@@ -265,3 +265,12 @@
 - **Metadata :** Titre de l'app "Mon Studio Créatif", icône personnalisée.
 - **Persistence :** Sauvegarde automatique du `stage` dans le `localStorage`.
 - **Nettoyage :** Suppression de tous les `console.log` et commentaires de debug avant le push GitHub.
+## 🧹 Nettoyage des Exports (PNG/PDF/JPEG)
+- **Suppression des Artefacts :** Avant chaque génération d'export (image ou document), le code doit impérativement vider le tableau des `nodes` du Transformer (`transformer.nodes([])`).
+- **Rendu Pur :** Aucun cadre de sélection, poignée de redimensionnement ou guide d'alignement ne doit être visible sur le fichier téléchargé.
+- **Rafraîchissement :** Appeler `layer.batchDraw()` immédiatement avant la capture pour garantir que le canvas est "propre".
+
+## 🖼️ Gestion des Images & Styles
+- **Zéro Effet par Défaut :** Toutes les images importées doivent avoir les propriétés `shadowColor`, `shadowBlur`, `shadowOffset` et `shadowOpacity` définies à 0.
+- **Filtres :** Aucun filtre de couleur ou d'assombrissement ne doit être appliqué automatiquement lors de l'ajout d'un élément sur le Stage.
+- **Couleur Initial :** Par défaut, les formes et le pinceau utilisent le noir pur (#000000).
