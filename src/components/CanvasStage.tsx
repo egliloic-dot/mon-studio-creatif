@@ -412,8 +412,6 @@ export function CanvasStage({
 
   const gridSize = Math.max(6, Math.min(64, 24 * transform.scale))
 
-  // The bottom-most image layer — used to render a drop-shadow beneath it
-  const bottomImageLayer = layers.find(l => l.type === 'image') as ImageLayer | undefined
 
   return (
     <div
@@ -486,47 +484,6 @@ export function CanvasStage({
             listening={false}
           />
 
-          {/* Shadow layers under bottom image — gives the "floating canvas" look */}
-          {bottomImageLayer && (() => {
-            const s = transform.scale
-            const iw = bottomImageLayer.width  * bottomImageLayer.scaleX
-            const ih = bottomImageLayer.height * bottomImageLayer.scaleY
-            const ix = bottomImageLayer.x
-            const iy = bottomImageLayer.y
-            return (
-              <>
-                {/* Outer ambient shadow */}
-                <Rect
-                  x={ix - 8 / s}
-                  y={iy + 16 / s}
-                  width={iw + 16 / s}
-                  height={ih + 8 / s}
-                  fill="rgba(0,0,0,0.35)"
-                  shadowColor="#000000"
-                  shadowBlur={80 / s}
-                  shadowOpacity={0.7}
-                  shadowOffsetX={0}
-                  shadowOffsetY={8 / s}
-                  listening={false}
-                  cornerRadius={3 / s}
-                />
-                {/* Sharp contact shadow */}
-                <Rect
-                  x={ix + 4 / s}
-                  y={iy + 8 / s}
-                  width={iw - 8 / s}
-                  height={ih}
-                  fill="rgba(0,0,0,0.28)"
-                  shadowColor="#000000"
-                  shadowBlur={24 / s}
-                  shadowOpacity={0.9}
-                  shadowOffsetX={0}
-                  shadowOffsetY={4 / s}
-                  listening={false}
-                />
-              </>
-            )
-          })()}
 
           {/* All visible layers, bottom → top */}
           {layers.map(layer => {

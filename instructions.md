@@ -15,6 +15,12 @@ La sidebar gauche (52 px fixe, `overflowX: hidden`) contient :
 - Si tous les ajustements sont à 0 : `clearCache()` est appelé → rendu natif SVG sans passage pixel. **AUCUN filtre, AUCUNE opacité réduite.**
 - Bounding box propre : `opacity: 1` à l'insertion, pas de shadow/filter CSS.
 
+## ⚠️ Images importées — zéro effet de style par défaut
+- **AUCUN** `shadowColor`, `shadowBlur`, `shadowOffset`, ni `shadowOpacity` sur les nœuds `KonvaImage`.
+- **NE PAS** ajouter de `Rect` décoratifs avec `fill` semi-transparent + `shadowBlur` autour des images : ces éléments font partie du `Stage` Konva et **s'exportent** dans les PNG/JPG/PDF, produisant un halo noir visible.
+- Les effets d'ombre décoratifs (style "floating canvas") doivent être rendu en CSS pur (`box-shadow` sur le conteneur HTML du stage), jamais comme nœuds Konva.
+- La `Page shadow` (artboard) utilise `fill="rgba(0,0,0,0)"` — acceptable car aucun pixel alpha n'est dessiné, le shadow est inactif.
+
 ## Outil Pinceau — valeurs par défaut
 - Couleur : **`#000000`** (noir) — NE PAS mettre `#ffffff`, le trait serait invisible sur l'artboard blanc.
 - Épaisseur : **5 px**
