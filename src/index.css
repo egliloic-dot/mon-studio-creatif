@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #0C0C0E;
+  color: #E5E5E5;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #2D2D2D;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7C3AED;
+}
+
+/* Frosted Glass utility */
+.glass {
+  background: rgba(14, 14, 16, 0.78);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 2px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.045);
+}
+
+.glass-hover:hover {
+  background: rgba(28, 28, 34, 0.75);
+  border-color: rgba(124, 58, 237, 0.32);
+}
+
+/* ─── Custom range input — wipe all native rendering ──────────────── */
+/* The actual visuals are pure HTML divs; this input is only for events */
+.px-range {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+}
+.px-range:focus          { outline: none; }
+.px-range:focus-visible  { outline: none; }
+
+/* Chrome / Safari: hide thumb and track */
+.px-range::-webkit-slider-thumb        { -webkit-appearance: none; width: 0; height: 0; }
+.px-range::-webkit-slider-runnable-track { background: transparent; height: 100%; }
+
+/* Firefox: hide thumb and track */
+.px-range::-moz-range-thumb  { width: 0; height: 0; border: none; background: transparent; opacity: 0; }
+.px-range::-moz-range-track  { background: transparent; }
+.px-range::-moz-range-progress { background: transparent; }
+
+/* ─── Simple slider (text font-size, etc.) ─────────────────────────── */
+.simple-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: #333;
+  cursor: pointer;
+  outline: none;
+  width: 100%;
+  margin: 4px 0;
+  border: none;
+}
+.simple-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #7c3aed;
+  cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.25), 0 1px 4px rgba(0,0,0,0.6);
+}
+.simple-slider::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: #333;
+}
+.simple-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #7c3aed;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.25);
+}
+.simple-slider::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: #333;
+}
+
+/* ─── Layer opacity mini-slider ────────────────────────────────────── */
+.layer-opacity-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.12);
+  cursor: pointer;
+  outline: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+.layer-opacity-range:focus { outline: none; }
+.layer-opacity-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #7c3aed;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px rgba(124,58,237,0.35), 0 1px 4px rgba(0,0,0,0.6);
+}
+.layer-opacity-range::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.12);
+}
+.layer-opacity-range::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #7c3aed;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px rgba(124,58,237,0.35);
+}
+.layer-opacity-range::-moz-range-track {
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.12);
+}
