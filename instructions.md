@@ -21,10 +21,18 @@ La sidebar gauche (52 px fixe, `overflowX: hidden`) contient :
 - Les effets d'ombre décoratifs (style "floating canvas") doivent être rendu en CSS pur (`box-shadow` sur le conteneur HTML du stage), jamais comme nœuds Konva.
 - La `Page shadow` (artboard) utilise `fill="rgba(0,0,0,0)"` — acceptable car aucun pixel alpha n'est dessiné, le shadow est inactif.
 
-## Outil Pinceau — valeurs par défaut
-- Couleur : **`#000000`** (noir) — NE PAS mettre `#ffffff`, le trait serait invisible sur l'artboard blanc.
-- Épaisseur : **5 px**
-- Source : `useState('#000000')` et `useState(5)` dans `App.tsx`
+## Couleurs par défaut — règle globale
+L'artboard est blanc (`#ffffff`). Tous les nouveaux éléments doivent être **noirs** par défaut pour être immédiatement visibles.
+
+| Élément | Propriété | Valeur par défaut |
+|---------|-----------|-------------------|
+| Texte | `fill` | `#000000` |
+| Pinceau | `stroke` | `#000000` |
+| Formes | `fill` | `#7c3aed` (violet accent) |
+
+- Source texte : `DEFAULT_TEXT_LAYER.fill = '#000000'` dans `src/types/canvas.ts`
+- Source pinceau : `useState('#000000')` dans `App.tsx`
+- **NE JAMAIS** initialiser `fill` à `#ffffff` sur un texte ou un trait — invisible sur fond blanc.
 
 ---
 

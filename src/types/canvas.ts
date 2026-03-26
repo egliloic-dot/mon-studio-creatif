@@ -75,7 +75,7 @@ export const DEFAULT_TEXT_LAYER: Omit<TextLayer, 'id' | 'name' | 'x' | 'y'> = {
   fontSize: 52,
   fontFamily: 'Arial',
   fontStyle: '',
-  fill: '#ffffff',
+  fill: '#000000',
   align: 'left',
   opacity: 1,
   visible: true,
