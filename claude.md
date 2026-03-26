@@ -273,4 +273,6 @@
 ## 🖼️ Gestion des Images & Styles
 - **Zéro Effet par Défaut :** Toutes les images importées doivent avoir les propriétés `shadowColor`, `shadowBlur`, `shadowOffset` et `shadowOpacity` définies à 0.
 - **Filtres :** Aucun filtre de couleur ou d'assombrissement ne doit être appliqué automatiquement lors de l'ajout d'un élément sur le Stage.
-- **Couleur Initial :** Par défaut, les formes et le pinceau utilisent le noir pur (#000000).
+- **Couleur par défaut :** Tout nouvel élément (Texte, Formes, Pinceau) doit être créé avec la couleur `#000000` (Noir).
+Confirme que Noir (#000000) est la couleur de remplissage par défaut pour toutes les formes.
+Précise que la forme Étoile doit avoir 5 branches définies via Konva.Star
