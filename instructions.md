@@ -28,11 +28,19 @@ L'artboard est blanc (`#ffffff`). Tous les nouveaux éléments doivent être **n
 |---------|-----------|-------------------|
 | Texte | `fill` | `#000000` |
 | Pinceau | `stroke` | `#000000` |
-| Formes | `fill` | `#7c3aed` (violet accent) |
+| Formes | `fill` | `#000000` (noir) |
 
 - Source texte : `DEFAULT_TEXT_LAYER.fill = '#000000'` dans `src/types/canvas.ts`
 - Source pinceau : `useState('#000000')` dans `App.tsx`
-- **NE JAMAIS** initialiser `fill` à `#ffffff` sur un texte ou un trait — invisible sur fond blanc.
+- Source formes : `fill: '#000000'` dans `handleAddShape` dans `App.tsx`
+- **NE JAMAIS** initialiser `fill` à `#ffffff` ou `#7c3aed` sur un nouvel élément — invisible ou incohérent sur fond blanc.
+
+## Étoile (Konva.Star) — proportions correctes
+- Utiliser `Konva.Star` (react-konva `<Star>`), PAS `Konva.Line`.
+- `numPoints={5}` pour 5 branches.
+- `outerRadius={layer.width / 2}` — rayon extérieur.
+- `innerRadius={layer.width / 4}` — **moitié** du rayon extérieur → ratio 0.5 = étoile reconnaissable.
+- Un ratio > 0.7 (ex: `width * 0.4` / `width / 2` = 0.8) produit un losange/cercle, pas une étoile.
 
 ---
 

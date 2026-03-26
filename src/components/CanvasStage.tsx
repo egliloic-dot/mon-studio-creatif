@@ -1299,7 +1299,7 @@ function KonvaShapeNode({ layer, isActive, suppressRef, onSelect, onUpdate, onGr
           x={layer.x} y={layer.y}
           numPoints={5}
           outerRadius={layer.width / 2}
-          innerRadius={layer.width * 0.4}
+          innerRadius={layer.width / 4}
           {...common}
         />
       )}

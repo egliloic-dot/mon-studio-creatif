@@ -270,7 +270,7 @@ export default function App() {
       rotation:    0,
       scaleX:      1,
       scaleY:      1,
-      fill:        '#7c3aed',
+      fill:        '#000000',
       stroke:      'transparent',
       strokeWidth: 0,
       opacity:     1,
