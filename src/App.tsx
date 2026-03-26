@@ -505,7 +505,10 @@ export default function App() {
       )
     }
 
-    // S'assurer que le canvas Konva est à jour
+    // Masquer les Transformers (cadres de sélection) — ils font partie du Stage
+    // et s'exporteraient sinon dans le PNG/JPG/PDF
+    const transformers = stage.find('Transformer')
+    transformers.forEach(tr => tr.hide())
     stage.getLayers().forEach(l => l.batchDraw())
 
     // Capturer uniquement la zone artboard, à 2× la résolution artboard
@@ -516,6 +519,10 @@ export default function App() {
       height: H * sc,
       pixelRatio: 2 / sc,
     })
+
+    // Restaurer les Transformers après capture
+    transformers.forEach(tr => tr.show())
+    stage.getLayers().forEach(l => l.batchDraw())
 
     const dl = (url: string, name: string) => {
       const a = document.createElement('a')
