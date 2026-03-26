@@ -505,21 +505,19 @@ export default function App() {
       )
     }
 
-    // ── 1. Détacher ET masquer tous les Transformers ─────────────────
-    // tr.nodes([]) : détache les poignées (le cadre devient vide)
-    // tr.visible(false) : garantie visuelle supplémentaire
+    // ── 1. Vider et masquer tous les Transformers (cadres de sélection)
     const konvaTransformers = stage.find('Transformer') as Konva.Transformer[]
     konvaTransformers.forEach(tr => {
-      tr.nodes([])
+      tr.nodes([])       // équivalent de transformerRef.current.nodes([])
       tr.visible(false)
     })
+    stage.batchDraw()    // demande un redraw au navigateur
 
-    // ── 2. Rendu SYNCHRONE — stage.draw() met à jour le canvas dans le
-    //    même tick JS, contrairement à batchDraw() qui utilise RAF.
-    //    toDataURL() lit le canvas immédiatement après.
-    stage.draw()
+    // ── 2. Délai 100ms — laisse le navigateur effacer visuellement
+    //    les cadres avant la capture (setTimeout garanti)
+    await new Promise<void>(resolve => setTimeout(resolve, 100))
 
-    // ── 3. Capture de l'artboard (Transformers invisibles à ce stade)
+    // ── 3. Capture de l'artboard (cadres absents du canvas à ce stade)
     const dataUrl = stage.toDataURL({
       x: transform.x,
       y: transform.y,
